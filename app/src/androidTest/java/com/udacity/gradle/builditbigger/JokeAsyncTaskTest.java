@@ -11,7 +11,11 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
 
+import static java.util.concurrent.TimeUnit.SECONDS;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertTrue;
 import static org.junit.Assert.*;
 
 @RunWith(AndroidJUnit4.class)
@@ -20,17 +24,12 @@ public class JokeAsyncTaskTest {
     public ActivityTestRule<MainActivity> activityRule = new ActivityTestRule<>(MainActivity.class);
 
     @Test
-    public void testNonEmptyString() {
+    public void testNonEmptyString() throws InterruptedException, ExecutionException, TimeoutException {
         Context applicationContext = activityRule.getActivity().getApplicationContext();
         JokeAsyncTask asyncTask = new JokeAsyncTask(applicationContext);
 
         asyncTask.execute();
-        String result = null;
-        try {
-            result = asyncTask.get();
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-        }
+        String result = asyncTask.get(20, SECONDS);
         assertNotNull(result);
         assertTrue(result.length() > 0);
     }

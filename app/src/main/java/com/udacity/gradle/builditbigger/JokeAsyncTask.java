@@ -44,7 +44,7 @@ public class JokeAsyncTask extends AsyncTask<Pair<Context, String>, Void, String
             myApiService = builder.build();
         }
         try {
-            return myApiService.sayHi().execute().getData();
+            return myApiService.sayJoke().execute().getData();
         } catch (IOException e) {
             return e.getMessage();
         }
